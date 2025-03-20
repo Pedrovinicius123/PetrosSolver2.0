@@ -1,12 +1,9 @@
-from collections import defaultdict
 from src.clause import read_cnf_file, generate_random_3SAT
 from src.solver import parse_formula, solve
-from pysat.solvers import Minisat22
 from rich.pretty import pprint
-from time import time
+from time import time # for tests
 
 import pycosat # for tests
-import random, timeit
 import matplotlib.pyplot as plt
 
 def test(formula, assignment):
@@ -43,10 +40,19 @@ implications = parse_formula(CNF, defaultdict(list))
 
 
 if __name__ == '__main__':
-    CNF = generate_random_3SAT(200, 1000)
-    implications = parse_formula(CNF, defaultdict(list))
+    CNF = read_cnf_file('sample4')
 
+    a = time()
+    implications = parse_formula(CNF, defaultdict(list))
     result = solve(implications)
-    
+    b = time()
+
     print(result)
-    pprint(test(result))
+    c = time()
+    pycosat_result = pycosat.solve(CNF)
+    d = time()
+    
+    print(pycosat_result)
+
+    pprint(test(CNF, result))
+    print(f'TIME PYCOSAT: {d-c}', f'TIME PETROS SOLVER: {b-a}')
