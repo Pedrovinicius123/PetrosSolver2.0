@@ -1,9 +1,11 @@
+from collections import defaultdict
 from src.clause import read_cnf_file, generate_random_3SAT
 from src.solver import parse_formula, solve
 from rich.pretty import pprint
 from time import time # for tests
 
-import pycosat # for tests
+import numpy as np
+import pycosat, timeit # for tests
 import matplotlib.pyplot as plt
 
 def test(formula, assignment):
@@ -38,9 +40,14 @@ implications = parse_formula(CNF, defaultdict(list))
     plt.scatter(sizes, times)
     plt.show()
 
+    with open('log.txt', 'w') as file:
+        file.write(f'Mediana: {np.median(times)}')
+        file.write(f'Média: {np.mean(times)}')
+        file.write(f'Desvio Padrão: {np.std(times)}')
 
-if __name__ == '__main__':
-    CNF = read_cnf_file('sample4')
+
+def test_with_formula(filename):
+    CNF = read_cnf_file(filename)
 
     a = time()
     implications = parse_formula(CNF, defaultdict(list))
@@ -56,3 +63,6 @@ if __name__ == '__main__':
 
     pprint(test(CNF, result))
     print(f'TIME PYCOSAT: {d-c}', f'TIME PETROS SOLVER: {b-a}')
+
+if __name__ == "__main__":
+    print(test_complexity())

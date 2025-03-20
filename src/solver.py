@@ -17,6 +17,8 @@ def parse_formula(formula, implications):
 
     for clause in formula:
         if key in clause:
+            clause.remove(key)
+            implications[-key].append(clause)
             formula.remove(clause)
 
         elif -key in clause:
@@ -37,8 +39,6 @@ def check_empty_clauses(formula):
     return False
 
 def solve(implications):
-    pprint(implications)
-
     new_formula = []
     for formula in implications.values():
         new_formula.extend(formula)
