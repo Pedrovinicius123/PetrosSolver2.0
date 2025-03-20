@@ -19,5 +19,7 @@ https://chatgpt.com/share/67dc0a2d-3bf8-8000-8fb1-64d9a40837da
 
 https://www.cs.ubc.ca/~hoos/SATLIB/benchm.html
 
+**Tell me if there are any theorical issues for me to adjust or reject the try**
+
 
 
