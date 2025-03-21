@@ -49,20 +49,26 @@ implications = parse_formula(CNF, defaultdict(list))
 def test_with_formula(filename):
     CNF = read_cnf_file(filename)
 
+    print(pycosat.solve(CNF))
+
     a = time()
     implications = parse_formula(CNF, defaultdict(list))
     result = solve(implications)
+    print(result)
     b = time()
 
-    print(result)
-    c = time()
-    pycosat_result = pycosat.solve(CNF)
-    d = time()
-    
-    print(pycosat_result)
-
     pprint(test(CNF, result))
-    print(f'TIME PYCOSAT: {d-c}', f'TIME PETROS SOLVER: {b-a}')
+    print(f'TIME PETROS SOLVER: {b-a}')
 
 if __name__ == "__main__":
-    print(test_complexity())
+    CNF = generate_random_3SAT(200, 200)
+    a = time()
+    print(pycosat.solve(CNF))
+    b = time()
+    implications = parse_formula(CNF, defaultdict(list))
+    result = solve(implications)
+    pprint(result)
+    c = time()
+
+    pprint(test(CNF, list(map(lambda x:-x if not result[x] else x, result))))
+    print(f'TIME PETROS SOLVER: {b-a}', f'TIME PYCOSAT {c-b}')
